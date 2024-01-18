@@ -1,15 +1,8 @@
 {
-  "name": "react-three-fiber-car-racing-game",
-  "version": "0.0.1",
+  "name": "car-physics",
+  "version": "0.1.0",
   "private": true,
   "homepage": ".",
-  "description": "Using use-cannon / cannon-es to make a car racing game.",
-  "keywords": [
-    "physics",
-    "cannon-es",
-    "vehicle",
-    "use-cannon"
-  ],
   "dependencies": {
     "@react-three/cannon": "6.4.0",
     "@react-three/drei": "9.34.4",
@@ -20,7 +13,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "three": "^0.146.0",
+    "three": "0.145.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
