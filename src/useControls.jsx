@@ -1,7 +1,28 @@
+import { useFrame } from "@react-three/fiber";
 import { useEffect, useState } from "react";
 
 export const useControls = (vehicleApi, chassisApi) => {
   let [controls, setControls] = useState({ });
+
+
+  const limitAngularVelocity = () => {
+    const vehicleBody = vehicleApi?.current?.api;
+    if (vehicleBody) {
+      const angularVelocity = vehicleBody.angularVelocity.get();
+      const maxAngularVelocity = 5;
+      if (angularVelocity.length() > maxAngularVelocity) {
+        angularVelocity.normalize().multiplyScalar(maxAngularVelocity);
+        vehicleBody.angularVelocity.set(angularVelocity.x, angularVelocity.y, angularVelocity.z);
+      }
+    }
+  };
+
+  useFrame((state) => {
+    limitAngularVelocity();
+  })
+
+
+
 
   useEffect(() => {
     const keyDownPressHandler = (e) => {

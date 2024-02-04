@@ -32,6 +32,7 @@ export function Car({ thirdPerson }) {
     useRef(null),
   );
 
+
   const [wheels, wheelInfos] = useWheels(width, height, front, wheelRadius);
 
   const [vehicle, vehicleApi] = useRaycastVehicle(
@@ -43,6 +44,8 @@ export function Car({ thirdPerson }) {
     useRef(null),
   );
 
+
+ 
   useControls(vehicleApi, chassisApi);
 
   useFrame((state) => {
