@@ -3,7 +3,7 @@ import { useFrame, useLoader } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import { Quaternion, Vector3 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { useControls } from "./useControls";
+import { useCarControls } from "./useControls";
 import { useWheels } from "./useWheels";
 import { WheelDebug } from "./WheelDebug";
 
@@ -46,7 +46,7 @@ export function Car({ thirdPerson }) {
 
 
  
-  useControls(vehicleApi, chassisApi);
+  useCarControls(vehicleApi, chassisApi);
 
   useFrame((state) => {
     if(!thirdPerson) return;
