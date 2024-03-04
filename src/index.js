@@ -18,7 +18,7 @@ createRoot(document.getElementById("root")).render(
     <div className="controls">
       <p>press w a s d to move</p>
       {/* <p>press k to swap camera(thirdperson/firstperson) </p> */}
-      <p>press x to to break</p>
+      <p>press x to break</p>
       <p>press r to reset</p>
       <p>press arrows for flips</p>
     </div>
