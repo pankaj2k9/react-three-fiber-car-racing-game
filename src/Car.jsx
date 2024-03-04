@@ -46,7 +46,7 @@ export function Car({ thirdPerson }) {
 
 
  
-  useCarControls(vehicleApi, chassisApi);
+  useCarControls(vehicleApi, chassisApi, thirdPerson);
 
   useFrame((state) => {
     if(!thirdPerson) return;
