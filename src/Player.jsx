@@ -103,8 +103,6 @@ function Player({ setThirdPerson }) {
 
       model.scene.position.x -= moveX;
       model.scene.position.z -= moveZ;
-
-      updateCameraTarget(moveX, moveZ);
     }
   });
 

@@ -10,7 +10,11 @@ import { Ground } from "./Ground";
 import { Track } from "./Track";
 export function Scene() {
   const [thirdPerson, setThirdPerson] = useState(false);
-  const [cameraPosition, setCameraPosition] = useState([-6, 3.9, 6.21]);
+  const [cameraPosition, setCameraPosition] = useState([-6, 1.9, 6.21]);
+  const [key, setKey] = useState(0);
+
+  const forceUpdate = () => setKey(prevKey => prevKey + 1);
+
 
   useEffect(() => {
     function keydownHandler(e) {
@@ -18,6 +22,9 @@ export function Scene() {
         // random is necessary to trigger a state change
         if (thirdPerson) setCameraPosition([-6, 3.9, 6.21 + Math.random() * 0.01]);
         setThirdPerson(!thirdPerson);
+      } else if (e.key == "r") {
+        setThirdPerson(false);
+        forceUpdate();
       }
     }
 
@@ -26,7 +33,7 @@ export function Scene() {
   }, [thirdPerson]);
 
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={null} key={key}>
       <Environment
         files={process.env.PUBLIC_URL + "/textures/envmap.hdr"}
         background={"both"}
