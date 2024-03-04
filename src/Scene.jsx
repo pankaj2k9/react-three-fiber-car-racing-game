@@ -5,11 +5,11 @@ import {
 } from "@react-three/drei";
 import { Suspense, useEffect, useState } from "react";
 import { Car } from "./Car";
+import Player from "./Player";
 import { Ground } from "./Ground";
 import { Track } from "./Track";
-import { ThirdPersonCharacter } from "./ThirdPersonCharacter"
 export function Scene() {
-  const [thirdPerson, setThirdPerson] = useState(true);
+  const [thirdPerson, setThirdPerson] = useState(false);
   const [cameraPosition, setCameraPosition] = useState([-6, 3.9, 6.21]);
 
   useEffect(() => {
@@ -33,16 +33,19 @@ export function Scene() {
       />
 
       <PerspectiveCamera makeDefault position={cameraPosition} fov={40} />
-      {!thirdPerson && (
-        <OrbitControls target={[-2.64, -0.71, 0.03]} />
-      )}
-      {/* <Suspense fallback={null}>
+        {!thirdPerson && (
+          <>
+            <OrbitControls target={[-2.64, -0.71, 0.03]} />
+            <Player setThirdPerson={setThirdPerson} />
+          </>
+        )}
+        {/* <Suspense fallback={null}>
         <ThirdPersonCharacter />
       </Suspense> */}
 
-      <Ground />
-      <Track />
-      <Car thirdPerson={thirdPerson} />
+        <Ground />
+        <Track />
+        <Car thirdPerson={thirdPerson} />
     </Suspense>
   );
 }

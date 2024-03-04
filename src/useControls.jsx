@@ -2,7 +2,7 @@ import { useFrame } from "@react-three/fiber";
 import { useEffect, useState } from "react";
 import { useControls } from 'leva';
 
-export const useCarControls = (vehicleApi, chassisApi) => {
+export const useCarControls = (vehicleApi, chassisApi, thirdPerson) => {
   let [controls, setControls] = useState({});
   const { accelator, turnSpeedFrontWheels, turnSpeedBackWheels, breakPressure } = useControls({
     accelator:
@@ -25,7 +25,7 @@ export const useCarControls = (vehicleApi, chassisApi) => {
       step: .1
     },
     breakPressure: {
-      value:1,
+      value: 1,
       min: 1,
       max: 5,
       step: 0.5
@@ -52,21 +52,26 @@ export const useCarControls = (vehicleApi, chassisApi) => {
 
 
   useEffect(() => {
-    const keyDownPressHandler = (e) => {
-      setControls((controls) => ({ ...controls, [e.key.toLowerCase()]: true }));
+    if (thirdPerson) {
+      const keyDownPressHandler = (e) => {
+        setControls((controls) => ({ ...controls, [e.key.toLowerCase()]: true }));
+      }
+
+      const keyUpPressHandler = (e) => {
+        setControls((controls) => ({ ...controls, [e.key.toLowerCase()]: false }));
+      }
+
+      window.addEventListener("keydown", keyDownPressHandler);
+      window.addEventListener("keyup", keyUpPressHandler);
+
+      return () => {
+        window.removeEventListener("keydown", keyDownPressHandler);
+        window.removeEventListener("keyup", keyUpPressHandler);
+      }
     }
 
-    const keyUpPressHandler = (e) => {
-      setControls((controls) => ({ ...controls, [e.key.toLowerCase()]: false }));
-    }
 
-    window.addEventListener("keydown", keyDownPressHandler);
-    window.addEventListener("keyup", keyUpPressHandler);
-    return () => {
-      window.removeEventListener("keydown", keyDownPressHandler);
-      window.removeEventListener("keyup", keyUpPressHandler);
-    }
-  }, []);
+  }, [thirdPerson]);
 
   useEffect(() => {
     if (!vehicleApi || !chassisApi) return;
@@ -75,7 +80,6 @@ export const useCarControls = (vehicleApi, chassisApi) => {
       console.log("accelator", accelator)
       vehicleApi.applyEngineForce(accelator, 2);
       vehicleApi.applyEngineForce(accelator, 3);
-      
     } else if (controls.s) {
       vehicleApi.applyEngineForce(-1 * accelator, 2);
       vehicleApi.applyEngineForce(-1 * accelator, 3);
