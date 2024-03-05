@@ -77,7 +77,6 @@ export const useCarControls = (vehicleApi, chassisApi, thirdPerson) => {
     if (!vehicleApi || !chassisApi) return;
 
     if (controls.w) {
-      console.log("accelator", accelator)
       vehicleApi.applyEngineForce(accelator, 2);
       vehicleApi.applyEngineForce(accelator, 3);
     } else if (controls.s) {
