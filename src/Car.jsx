@@ -90,7 +90,7 @@ export function Car({ thirdPerson }) {
   return (
     <group ref={vehicle} name="vehicle">
       <group ref={chassisBody} name="chassisBody">
-        <primitive object={result} rotation-y={Math.PI} position={[0, -0.09, 0]}/>
+        <primitive object={result} rotation-y={Math.PI} position={thirdPerson ? [0, -0.05, 0] : [0, -0.09, 0]}/>
       </group>
 
       <WheelDebug wheelRef={wheels[0]} radius={wheelRadius} />
