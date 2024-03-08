@@ -51,6 +51,9 @@ export function Car({ thirdPerson }) {
   useFrame((state) => {
     if(!thirdPerson) return;
 
+
+
+
     let position = new Vector3(0,0,0);
     position.setFromMatrixPosition(chassisBody.current.matrixWorld);
 
@@ -62,9 +65,16 @@ export function Car({ thirdPerson }) {
     wDir.normalize();
 
     let cameraPosition = position.clone().add(wDir.clone().multiplyScalar(1).add(new Vector3(0, 0.3, 0)));
-    
-    wDir.add(new Vector3(0, 0.2, 0));
-    state.camera.position.copy(cameraPosition);
+
+    // wDir.add(new Vector3(0, 0.2, 0));
+    // state.camera.position.copy(cameraPosition);
+    // state.camera.lookAt(position);
+    const smoothFactor = 0.05;
+    const targetCameraPosition = cameraPosition;
+    const currentCameraPosition = state.camera.position.clone();
+
+    const interpolatedPosition = currentCameraPosition.lerp(targetCameraPosition, smoothFactor);
+    state.camera.position.copy(interpolatedPosition);
     state.camera.lookAt(position);
   });
 
