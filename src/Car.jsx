@@ -16,10 +16,17 @@ export function Car({ thirdPerson }) {
   ).scene;
 
   const position = [-1.5, 0.5, 3];
-  const width = 0.15;
-  const height = 0.07;
+  const width = 0.35;
+  const height = 0.17;
   const front = 0.15;
-  const wheelRadius = 0.05;
+  const wheelRadius = 0.15;
+
+  const wheelsRefs = useRef({
+    '5WheelFtL': null,
+    '5WheelFtR': null,
+    '5WheelBkL': null,
+    '5WheelBkR': null
+  });
 
   const chassisBodyArgs = [width, height, front * 2];
   const [chassisBody, chassisApi] = useBox(
@@ -51,9 +58,6 @@ export function Car({ thirdPerson }) {
   useFrame((state) => {
     if(!thirdPerson) return;
 
-
-
-
     let position = new Vector3(0,0,0);
     position.setFromMatrixPosition(chassisBody.current.matrixWorld);
 
@@ -77,6 +81,47 @@ export function Car({ thirdPerson }) {
     state.camera.position.copy(interpolatedPosition);
     state.camera.lookAt(position);
   });
+
+  // Traverse the model once it's loaded to get the wheel references
+  useEffect(() => {
+    result.traverse((child) => {
+      if (child.isObject3D) {
+
+        if (child.name in wheelsRefs.current) {
+          wheelsRefs.current[child.name] = child;
+        }
+      }
+    });
+  }, [result]);
+
+  // useFrame((state, delta) => {
+  //   const someSpeedValue = 1;
+  //   Object.values(wheelsRefs.current).forEach((wheel) => {
+  //     // console.log("wheel", wheel)
+  //     if (wheel) {
+  //       const rotationAmount = someSpeedValue * delta;
+  //       wheel.rotation.x += rotationAmount;
+  //     }
+  //   });
+  // });
+
+  useEffect(() => {
+    const unsubscribe = chassisApi?.velocity?.subscribe((velocity) => {
+      const speed = Math.sqrt(velocity[0] ** 2 + velocity[1] ** 2 + velocity[2] ** 2);
+      const wheelCircumference = 2 * Math.PI * wheelRadius;
+      const rotationThisFrame = (speed / wheelCircumference);
+  
+      Object.values(wheelsRefs.current).forEach((wheel) => {
+        if (wheel) {
+          wheel.rotation.x += rotationThisFrame;
+          wheel.rotation.x %= 2 * Math.PI;
+        }
+      });
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [chassisApi?.velocity]);
 
   useEffect(() => {
     if (!result) return;
